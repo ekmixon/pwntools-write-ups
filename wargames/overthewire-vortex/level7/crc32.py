@@ -11,7 +11,7 @@ def build_crc_tables():
     for i in range(256):
         fwd = i
         rev = i << 24
-        for j in range(8, 0, -1):
+        for _ in range(8, 0, -1):
             # build normal table
             if (fwd & 1) == 1:
                 fwd = (fwd >> 1) ^ POLY

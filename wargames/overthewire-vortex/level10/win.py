@@ -11,7 +11,7 @@ user     = 'vortex%i' % level
 chal     = 'vortex%i' % level
 password  = args['PASSWORD']
 passfile = '/etc/vortex_pass/vortex%i' % (level+1)
-binary   = '/vortex/%s' % chal
+binary = f'/vortex/{chal}'
 shell    = ssh(host=host, user=user, password=password)
 
 if not os.path.exists(chal):
@@ -29,7 +29,7 @@ shell['gcc -O3 ticks.c -o ticks']
 # Run our binary and their binary at the same time
 # so that the times are closer.
 def find_the_seed():
-    sh    = shell.run('(./ticks && %s)' % binary)
+    sh = shell.run(f'(./ticks && {binary})')
     exec(sh.recvline()) # seed
     exec(sh.recvline()) # ticks
 
@@ -39,9 +39,9 @@ def find_the_seed():
     want = sh.recvline().strip()
     want = want.strip('[], ')
     want = want.split(',')
-    want = [int('0x'+i.strip(), 16) for i in want]
+    want = [int(f'0x{i.strip()}', 16) for i in want]
 
-    log.info("Needle: %s" % want)
+    log.info(f"Needle: {want}")
 
     for seed in xrange(seed-0x10000, seed+0x10000):
         libc.srand(seed)

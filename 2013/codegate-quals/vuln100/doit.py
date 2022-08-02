@@ -87,8 +87,7 @@ debugger_stack = 0x7fffffffd1c0
 actual_stack   = u64(stack_leak[0x18:][:8])
 
 log.info("Remote addresses:")
-for k in addresses.keys():
-    addr = addresses[k]
+for k, addr in addresses.items():
     addr -= debugger_stack
     addr += actual_stack
     log.info("%x %s" % (addr, k))

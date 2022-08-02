@@ -38,7 +38,7 @@ class FormatStr:
         elif addr_type == str:
             addr = struct.unpack("<I", addr)[0]
         else:
-            raise TypeError("Address must be int or packed int, not: " + str(addr_type))
+            raise TypeError(f"Address must be int or packed int, not: {str(addr_type)}")
 
         val_type = type(value)
         if val_type == type(self):  # instance...
@@ -47,13 +47,13 @@ class FormatStr:
         if val_type in self.parsers:
             return self.parsers[val_type](addr, value)
         else:
-            raise TypeError("Unknown type of value: " + str(val_type))
+            raise TypeError(f"Unknown type of value: {str(val_type)}")
 
     def __getitem__(self, addr):
         return self.mem[addr]
 
     def _set_list(self, addr, lst):
-        for i, value in enumerate(lst):
+        for value in lst:
             addr = self.__setitem__(addr, value)
         return addr
     
@@ -114,7 +114,7 @@ class PayloadGenerator:
                 else:
                     raise ValueError("Unknown error. Missing bytes")
                 continue
-            
+
             word = 0
             for i in range(2):
                 if addr + i not in self.mem:
@@ -130,12 +130,10 @@ class PayloadGenerator:
                     addr_index += 2
                 else:
                     raise ValueError("Unknown error. Missing bytes")
-                continue
+            elif addr_index > 0:
+                addr_index -= 1  # can't fit one byte, backstepping
             else:
-                if addr_index > 0:
-                    addr_index -= 1  # can't fit one byte, backstepping
-                else:
-                    raise ValueError("Can't fit words. (Probably single 1-byte set?).")
+                raise ValueError("Can't fit words. (Probably single 1-byte set?).")
 
         self.tuples.sort(key=operator.itemgetter(2))
         return
@@ -166,20 +164,20 @@ class PayloadGenerator:
             for addr, size, value in self.tuples:
                 print_len = value - printed
                 if print_len > 2:
-                    payload += "%" + str(print_len) + "c"
+                    payload += f"%{str(print_len)}c"
                 elif print_len >= 0:
                     payload += "A" * print_len
                 else:
                     warning("Can't write a value %08x (too small)." % value)
                     continue
 
-                payload += "%" + str(index) + "$" + ("h" if size == 2 else "") + "n"
+                payload += f"%{str(index)}$" + ("h" if size == 2 else "") + "n"
                 addrs += struct.pack("<I", addr)
                 printed += print_len
                 index += 1
-            
+
             payload += "A" *  ((padding-len(payload)) % 4)  # align 4 bytes
-            
+
             if len(payload) == prev_len:
                 payload += addrs  # argnumbers are set right
                 break

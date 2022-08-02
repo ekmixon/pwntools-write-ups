@@ -146,8 +146,11 @@ class HeapFun(object):
     def __str__(self):
         """Returns a string containing the heap layout."""
         s = ['Heap layout:']
-        for i, (addr, size) in enumerate(self):
-            s.append('heap[%i]: %#x [%i bytes]' % (i+1,addr,size))
+        s.extend(
+            'heap[%i]: %#x [%i bytes]' % (i + 1, addr, size)
+            for i, (addr, size) in enumerate(self)
+        )
+
         return '\n'.join(s)
 
     def __len__(self):

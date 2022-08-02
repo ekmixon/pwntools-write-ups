@@ -18,7 +18,7 @@ r.recvuntil('address.\n')
 
 # Receive the heap locations
 addrs = []
-for n in range(20):
+for _ in range(20):
     r.recvuntil('loc=')
     loc = r.recvuntil(']')[:-1]
     addrs.append(int(loc, 16))

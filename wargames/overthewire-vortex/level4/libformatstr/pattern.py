@@ -25,11 +25,11 @@ def msfpattern(n):
 def make_pattern(buffer_size, start_index=1, max_index=500):
     format_size = buffer_size // 2
     pattern_size = buffer_size // 8 
-    
+
     index = start_index
     payload = msfpattern(pattern_size * 4)
     while True:
-        fmt = "%" + str(index) + "$p"
+        fmt = f"%{str(index)}$p"
         if len(payload) + len(fmt) > buffer_size:
             break
         payload += fmt
@@ -41,5 +41,3 @@ def make_pattern(buffer_size, start_index=1, max_index=500):
 if __name__ == "__main__":
 	if len(sys.argv) > 1:
 		sys.stdout.write( make_pattern(*map(int, sys.argv[1:])) )
-	else:
-		print "Usage: pattern buffer_size [start_index=1 [max_index=500]]"

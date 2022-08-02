@@ -66,5 +66,3 @@ if __name__ == "__main__":
     if len(sys.argv) > 1:
         lst = [sys.argv[1]] + map(int, sys.argv[2:])
         fmtprint(*lst)
-    else:
-        print "Usage: fmtemul formatstr argnum [padding=0 [start_len=0]]"

